@@ -21,8 +21,12 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.yotadevices.util.LogCat;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import app.earplug.com.earplugapp.bluetooth.gatt.operations.CharacteristicChangeListener;
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.GattCharacteristicReadOperation;
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.GattOperation;
 import app.earplug.com.earplugapp.util.Preconditions;
@@ -47,6 +51,7 @@ public class GattManager {
     private GattOperation mCurrentOperation;
     private AsyncTask<Void, Void, Void> mCurrentOperationTimeout;
     private String mAddres;
+    private HashMap<UUID, ArrayList<CharacteristicChangeListener>> mCharacteristicChangeListeners;
     private BluetoothDevice mDevice;
     private final static int GATT_ERROR = 133;
 
@@ -55,6 +60,7 @@ public class GattManager {
         mQueue = new ConcurrentLinkedQueue<>();
         mCurrentOperation = null;
         mAddres = Preconditions.checkNotNull(addres);
+        mCharacteristicChangeListeners = new HashMap<>();
         initialize();
         connect(mAddres);
     }
@@ -107,6 +113,7 @@ public class GattManager {
                 }
             }
 
+
             @Override
             public void onCharacteristicRead(BluetoothGatt gatt,
                                              BluetoothGattCharacteristic characteristic,
@@ -133,6 +140,17 @@ public class GattManager {
                         + mDevice.getAddress());
                 setCurrentOperation(null);
                 drive();
+            }
+
+            @Override
+            public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                super.onCharacteristicChanged(gatt, characteristic);
+                LogCat.d(TAG,"Characteristic " + characteristic.getUuid() + "was changed, device: " + mDevice.getAddress());
+                if (mCharacteristicChangeListeners.containsKey(characteristic.getUuid())) {
+                    for (CharacteristicChangeListener listener : mCharacteristicChangeListeners.get(characteristic.getUuid())) {
+                        listener.onCharacteristicChanged(characteristic);
+                    }
+                }
             }
         });
 
@@ -268,5 +286,14 @@ public class GattManager {
         for (GattOperation operation : bundle.getOperations()) {
             queue(operation);
         }
+    }
+
+    public void addCharacteristicChangeListener(UUID characteristicUuid,
+                                                CharacteristicChangeListener characteristicChangeListener) {
+        if(!mCharacteristicChangeListeners.containsKey(characteristicUuid)) {
+            mCharacteristicChangeListeners.put(characteristicUuid,
+                    new ArrayList<CharacteristicChangeListener>());
+        }
+        mCharacteristicChangeListeners.get(characteristicUuid).add(characteristicChangeListener);
     }
 }

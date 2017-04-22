@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="child_separator_color">#1E88E5</color>
+    <color name="status_bar_color">#1976D2</color>
+    <color name="toolbar_color">#2196F3</color>
+    <color name="white">@android:color/white</color>
+    <color name="primary_600">#1E88E5</color>
+    <color name="primary">#2196F3</color>
+    <color name="background_card">#FEFEFE</color>
+    <color name="grey">#BDBDBD</color>
+    <color name="black">@android:color/black</color>
+    <color name="tab_indicator">#607D8B</color>
+    <color name="shadow_button">#CABBBBBB</color>
 </resources>

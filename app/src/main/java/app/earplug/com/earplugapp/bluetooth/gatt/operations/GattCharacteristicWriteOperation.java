@@ -2,6 +2,7 @@ package app.earplug.com.earplugapp.bluetooth.gatt.operations;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 
 import java.util.UUID;
 
@@ -20,10 +21,13 @@ public class GattCharacteristicWriteOperation extends GattOperation {
 
     @Override
     public void execute(BluetoothGatt gatt) {
-        BluetoothGattCharacteristic characteristic = gatt.getService(mService)
-                .getCharacteristic(mCharacteristic);
-        characteristic.setValue(mValue);
-        gatt.writeCharacteristic(characteristic);
+
+        BluetoothGattService service = gatt.getService(mService);
+        if(service != null){
+            BluetoothGattCharacteristic characteristic = service.getCharacteristic(mCharacteristic);
+            characteristic.setValue(mValue);
+            gatt.writeCharacteristic(characteristic);
+        }
     }
 
     @Override

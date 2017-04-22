@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EarPlugApp</string>
+    <string name="connected_notification">EarPlug connected</string>
+    <string name="disconnected_notification">EarPlug disconnected</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="unknown_device">Unknown Device</string>
+    <string name="search_devices">Search devices</string>
+    <string name="ble_not_supported">BLE is not supported</string>
 </resources>
