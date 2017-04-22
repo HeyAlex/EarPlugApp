@@ -14,6 +14,8 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "http://fw.ydevices.com/maven" }
+        maven { url "https://jitpack.io" }
         jcenter()
     }
 }
