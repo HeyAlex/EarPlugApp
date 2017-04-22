@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -239,5 +240,11 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
     public EarPlug getCometa() {
         return mEarPlug;
+    }
+
+    public static void sendSelfIntent(Context context, String action, Bundle extras){
+        Intent intent = new Intent(action);
+        intent.putExtras(extras);
+        context.startService(intent);
     }
 }
