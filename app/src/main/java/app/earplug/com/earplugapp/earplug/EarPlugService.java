@@ -18,21 +18,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
-import com.androidhiddencamera.HiddenCameraUtils;
-import com.androidhiddencamera.config.CameraFacing;
-import com.androidhiddencamera.config.CameraImageFormat;
-import com.androidhiddencamera.config.CameraResolution;
-import com.androidhiddencamera.config.CameraRotation;
 import com.yotadevices.util.LogCat;
 
 import app.earplug.com.earplugapp.bluetooth.gatt.GattCharacteristicReadCallback;
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.CharacteristicChangeListener;
+import app.earplug.com.earplugapp.cam.CamService;
 import app.earplug.com.earplugapp.notification.ConnectionNotificationMaker;
 import app.earplug.com.earplugapp.util.Preconditions;
 
@@ -61,15 +56,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         super.onCreate();
         characteristicChangeListener = this;
         registerServiceReceiver();
-
-        //Setting camera configuration
-        mCameraConfig = new CameraConfig()
-                .getBuilder(this)
-                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
-                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
-                .setImageFormat(CameraImageFormat.FORMAT_JPEG)
-                .setImageRotation(CameraRotation.ROTATION_270)
-                .build();
     }
 
     @Override
@@ -148,19 +134,11 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     public void onCharacteristicChanged(BluetoothGattCharacteristic characteristic) {
         final String value = characteristic.getStringValue(1);
         final String[] spl = value.split(":");
-        if(spl[0].equals("pressed") && spl[1].equals("1")){
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                if (HiddenCameraUtils.canOverDrawOtherApps(this)) {
-
-                } else {
-                    //Open settings to grant permission for "Draw other apps".
-                    HiddenCameraUtils.openDrawOverPermissionSetting(this);
-                }
-            } else {
-                //TODO Ask your parent activity for providing runtime permission
-            }
+        if(spl[0].contains("long")){
+            startService(new Intent(this, CamService.class));
+            mEarPlug.changeVibrationMode();
         }
-        mEarPlug.changeVibrationMode();
+
     }
 
 
