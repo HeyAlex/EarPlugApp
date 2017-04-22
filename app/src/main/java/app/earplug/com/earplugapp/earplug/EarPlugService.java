@@ -1,5 +1,6 @@
 package app.earplug.com.earplugapp.earplug;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -11,14 +12,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.androidhiddencamera.CameraConfig;
+import com.androidhiddencamera.HiddenCameraUtils;
+import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 import com.yotadevices.util.LogCat;
 
 import app.earplug.com.earplugapp.bluetooth.gatt.GattCharacteristicReadCallback;
@@ -30,6 +39,11 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
     private final static String TAG = EarPlugService.class.getSimpleName();
 
+    public static final String INCOMING_CALL_START = "incoming_call_start";
+    public static final String INCOMING_CALL_END = "incoming_call_end";
+    public static final String NOTIFICATION_SMS_POSTED = "notification_sms_posted";
+    public static final String NOTIFICATION_GENERIC_POSTED = "notification_generic_posted";
+
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mBluetoothLeScanner;
@@ -37,14 +51,24 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     private String mBluetoothDeviceName = "";
     private CharacteristicChangeListener characteristicChangeListener;
     private int mConnectionState = EarPlugConstants.STATE_DISCONNECTED;
-
+    private CameraConfig mCameraConfig;
     public EarPlug mEarPlug;
+    public static boolean isConnected;
 
     @Override
     public void onCreate() {
         super.onCreate();
         characteristicChangeListener = this;
         registerServiceReceiver();
+
+        //Setting camera configuration
+        mCameraConfig = new CameraConfig()
+                .getBuilder(this)
+                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
+                .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .setImageRotation(CameraRotation.ROTATION_270)
+                .build();
     }
 
     @Override
@@ -81,6 +105,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                         startForeground(EarPlugConstants.ON_CONNECTION_ID,
                                 new ConnectionNotificationMaker(getApplicationContext())
                                         .makeNotificationConnectionChanged(true));
+                        isConnected = true;
                         mEarPlug.changeVibrationMode();
                         mEarPlug.setNotificationEnabledForButton(characteristicChangeListener);
                     }
@@ -94,6 +119,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                     NotificationManager nMgr = (NotificationManager) getSystemService(Context
                             .NOTIFICATION_SERVICE);
                     nMgr.cancelAll();
+                    isConnected = false;
                     fireNotification(new ConnectionNotificationMaker(getApplicationContext())
                             .makeNotificationConnectionChanged(false));
 
@@ -117,25 +143,26 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         }
     }
 
-    Handler messageHandler = new Handler();
-
     @Override
     public void onCharacteristicChanged(BluetoothGattCharacteristic characteristic) {
         final String value = characteristic.getStringValue(1);
+        final String[] spl = value.split(":");
+        if(spl[0].equals("pressed") && spl[1].equals("1")){
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                if (HiddenCameraUtils.canOverDrawOtherApps(this)) {
 
-        displayValue(value);
-        mEarPlug.changeVibrationMode();
-
-    }
-
-    public void displayValue(final String value) {
-        Runnable doDisplayError = new Runnable() {
-            public void run() {
-                Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+                } else {
+                    //Open settings to grant permission for "Draw other apps".
+                    HiddenCameraUtils.openDrawOverPermissionSetting(this);
+                }
+            } else {
+                //TODO Ask your parent activity for providing runtime permission
             }
-        };
-        messageHandler.post(doDisplayError);
+        }
+        mEarPlug.changeVibrationMode();
     }
+
+
 
     public class LocalBinder extends Binder {
         public EarPlugService getService() {
