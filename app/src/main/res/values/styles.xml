@@ -4,9 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">#0b0f29</item>
         <item name="colorPrimary">#121733</item>
-        <item name="colorButtonNormal">#2196f3</item>
+
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorAccent">@color/status_bar_color</item>
+        <item name="colorAccent">#121733</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
