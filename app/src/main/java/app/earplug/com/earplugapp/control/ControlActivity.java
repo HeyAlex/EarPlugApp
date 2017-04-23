@@ -13,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,9 +24,11 @@ import app.earplug.com.earplugapp.earplug.EarPlugService;
 public class ControlActivity extends AppCompatActivity {
     private static String mAddress = "";
     private static String mName = "";
+    private Button disc_con_button;
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
 
+    private boolean isConnected;
     private EarPlugService mBluetoothLeService;
 
     @Override
@@ -33,6 +36,7 @@ public class ControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.control_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        disc_con_button = (Button) findViewById(R.id.dis_con_button);
         toolbar.setTitle(R.string.app_name);
         final Intent intent = getIntent();
         if (intent != null) {
@@ -64,11 +68,8 @@ public class ControlActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if (EarPlugConstants.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
-
-
                 onConnectionChanged(intent.getIntExtra(EarPlugConstants.EXTRA_CONNECTION_STATE,
                         EarPlugConstants.STATE_DISCONNECTED));
-
             }
         }
     };
@@ -78,13 +79,13 @@ public class ControlActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mName = mBluetoothLeService.getEarPlug().getmName();
+            mAddress = mBluetoothLeService.getEarPlug().getmAddres();
             mBluetoothLeService = ((EarPlugService.LocalBinder) service).getService();
             if (mBluetoothLeService.getConnectionState() != EarPlugConstants.STATE_CONNECTED) {
-               mBluetoothLeService.setBluetoothDevice(mAddress, mName);
-            }
+                mBluetoothLeService.setBluetoothDevice(mAddress, mName);
 
-           // mNameText.setText(mBluetoothLeService.getCometa().getName());
-           // mAddresText.setText(mBluetoothLeService.getCometa().getAddres());
+            }
             onConnectionChanged(mBluetoothLeService.getConnectionState());
         }
 
@@ -101,16 +102,36 @@ public class ControlActivity extends AppCompatActivity {
         TextView battery_status = (TextView) findViewById(R.id.battery_status);
         switch (connectionState) {
             case EarPlugConstants.STATE_CONNECTING:
+                isConnected = false;
                 connection_status_img.setImageResource(R.drawable.ic_connecting);
+                disc_con_button.setVisibility(View.INVISIBLE);
                 connection_status.setText(R.string.connecting);
                 battery_status.setVisibility(View.GONE);
                 break;
             case EarPlugConstants.STATE_CONNECTED:
+                isConnected = true;
+                disc_con_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mBluetoothLeService.getEarPlug().disconnect();
+                    }
+                });
+                disc_con_button.setVisibility(View.VISIBLE);
+                disc_con_button.setText(R.string.disconnect_button);
                 connection_status_img.setImageResource(R.drawable.ic_connected);
                 connection_status.setText(R.string.connected);
                 battery_status.setVisibility(View.VISIBLE);
                 break;
             case EarPlugConstants.STATE_DISCONNECTED:
+                isConnected = false;
+                disc_con_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mBluetoothLeService.getEarPlug().reconnectLastEarPlug(getApplicationContext());
+                    }
+                });
+                disc_con_button.setVisibility(View.VISIBLE);
+                disc_con_button.setText(R.string.connect_button);
                 connection_status_img.setImageResource(R.drawable.ic_disconnected);
                 connection_status.setText(R.string.dicsonnected);
                 battery_status.setVisibility(View.GONE);

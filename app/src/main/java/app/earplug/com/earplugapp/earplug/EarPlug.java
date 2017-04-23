@@ -1,7 +1,9 @@
 package app.earplug.com.earplugapp.earplug;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import app.earplug.com.earplugapp.R;
 import app.earplug.com.earplugapp.bluetooth.gatt.GattCharacteristicReadCallback;
 import app.earplug.com.earplugapp.bluetooth.gatt.GattManager;
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.CharacteristicChangeListener;
@@ -16,6 +18,7 @@ public class EarPlug {
     private boolean isLedOn = false;
     private GattCharacteristicReadCallback mCallback;
     private String mAddres;
+
     private String mName;
     private boolean mIsBusy;
 
@@ -47,6 +50,35 @@ public class EarPlug {
                 EarPlugConstants.IMMEDIATE_ALERT_LEVEL_UUID,
                 data);
         mGattMager.queue(changeLedState);
+    }
+
+    public String getmAddres() {
+        return mAddres;
+    }
+
+    public void setmAddres(String mAddres) {
+        this.mAddres = mAddres;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public void reconnectLastEarPlug(Context context) {
+        try {
+            mGattMager = new GattManager(context, mAddres);
+        } catch (NullPointerException ex) {
+            Toast.makeText(context, R.string.error_on_reconnect, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void disconnect() {
+        mGattMager.disconnect();
     }
 
 }

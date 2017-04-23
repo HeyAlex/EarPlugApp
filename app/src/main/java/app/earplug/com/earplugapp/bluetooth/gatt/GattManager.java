@@ -64,6 +64,9 @@ public class GattManager {
         initialize();
         connect(mAddres);
     }
+    public void disconnect(){
+        mGatt.disconnect();
+    }
 
     /**
      * Connects to the GATT server hosted on the Bluetooth LE mDevice.

@@ -143,13 +143,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         final String value = characteristic.getStringValue(1);
         final String[] spl = value.split(":");
         if (spl[0].contains("long")) {
-            if (isRinging) {
-                try {
-                    rejectCall();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else {
+            if (!isRinging) {
                 startService(new Intent(this, CamService.class));
 
                 handler.postDelayed(new Runnable() {
@@ -157,15 +151,23 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                     public void run() {
                         mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                     }
-                }, 1700);
+                }, 1600);
             }
 
         }else if(spl[0].contains("pressed") && spl[1].contains("2")){
 
-        }else if(spl[0].contains("pressed") && spl[1].contains("1")){
 
+        }else if(spl[0].contains("pressed") && spl[1].contains("1")){
+            if (isRinging) {
+                try {
+                    rejectCall();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
 
     private void rejectCall() {
         try {
@@ -189,10 +191,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
     }
 
-
-    public void answerCall() {
-
-    }
 
 
     public class LocalBinder extends Binder {
@@ -295,4 +293,5 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         serviceIntent.setPackage(context.getPackageName());
         context.startService(serviceIntent);
     }
+
 }
