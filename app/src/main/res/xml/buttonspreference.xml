@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:key="single_tap_category"
+    <PreferenceCategory
+        android:key="single_tap_category"
         android:title="Single tap">
 
-        <SwitchPreference android:key="key_reject_call"
-            android:title="Reject call"
-            android:summary="Reject incoming call by single tap on button"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="key_reject_call"
+            android:summary="Reject incoming call by single tap on button on your plug"
+            android:title="Reject call" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:key="double_tap_category"
+    <PreferenceCategory
+        android:key="double_tap_category"
         android:title="Double tap">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="key_make_call"
+            android:summary="Call to last number in call log by double tap on button on your plug"
+            android:title="Call to last number" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:key="long_tap_category"
+    <PreferenceCategory
+        android:key="long_tap_category"
         android:title="Long tap">
         <ListPreference
-        android:entries="@array/long_tap_strings"
-        android:entryValues="@array/long_tap_strings_values"
-        android:key="key_long_tap_functionality"
-        android:summary="%s"
-        android:title="Long tap functionality" />
+            android:defaultValue="0"
+            android:entries="@array/long_tap_strings"
+            android:entryValues="@array/long_tap_strings_values"
+            android:key="key_long_tap_functionality"
+            android:summary="%s"
+            android:title="Long tap functionality" />
 
         <ListPreference
             android:defaultValue=""
-            android:key="key_long_tap_selected_app"
             android:dependency="key_long_tap_functionality"
+            android:key="key_long_tap_selected_app"
             android:summary="%s"
             android:title="Select app to launch" />
     </PreferenceCategory>
