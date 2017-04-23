@@ -38,7 +38,21 @@
                 android:layout_marginEnd="6dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textAllCaps="true"
+                android:textSize="20dp"
                 android:text="@string/dicsonnected"/>
+
+            <TextView
+                android:id="@+id/battery_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/connection_status_img"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:textSize="20dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textAllCaps="true"
+                android:text="BATTERY 99%"/>
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -54,45 +68,6 @@
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Colored"
             android:text="Disconnect"/>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/card_bg"
-            android:layout_margin="4dp"
-            android:elevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp">
-                <TextView
-                    android:id="@+id/battery_lvl_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:drawableStart="@drawable/ic_battery"
-                    android:drawablePadding="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textColor="?attr/colorPrimary"
-                    android:drawableTint="?attr/colorPrimary"
-                    android:text="Battery 99%"/>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_battery_mockup"/>
-
-            </LinearLayout>
-
-        </FrameLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -113,7 +88,25 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:elevation="2dp"
-                    android:background="@drawable/card_bg">
+                    android:background="@drawable/ic_button_logo_1">
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_lightbulb_outline_white_48dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="bottom"
+                        android:paddingStart="8dp"
+                        android:gravity="center_vertical"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:text="Light"
+                        android:drawablePadding="8dp"
+                        android:textSize="16dp"
+                        android:drawableStart="@drawable/ic_menu_lightbulb"
+                        android:background="#77000000"/>
 
                 </FrameLayout>
 
@@ -125,7 +118,27 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:elevation="2dp"
-                    android:background="@drawable/card_bg">
+                    android:background="@drawable/ic_button_logo_2">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_vibration_white_48dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="bottom"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:text="Vibration"
+                        android:drawablePadding="8dp"
+                        android:textSize="16dp"
+                        android:drawableStart="@drawable/ic_menu_vibration"
+                        android:background="#77000000"/>
 
                 </FrameLayout>
 
@@ -145,19 +158,58 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:elevation="2dp"
-                    android:background="@drawable/card_bg">
+                    android:background="@drawable/ic_button_logo_3">
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_touch_app_white_48dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="bottom"
+                        android:paddingStart="8dp"
+                        android:gravity="center_vertical"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:text="Buttons"
+                        android:drawablePadding="8dp"
+                        android:textSize="16dp"
+                        android:drawableStart="@drawable/ic_menu_button"
+                        android:background="#77000000"/>
 
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_margin="4dp"
+                    android:visibility="invisible"
                     android:layout_weight="1"
                     android:minHeight="48dp"
                     android:minWidth="48dp"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:elevation="2dp"
-                    android:background="@drawable/card_bg">
+                    android:background="@drawable/ic_button_logo_1">
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_vibration_white_48dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="bottom"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:text="Find"
+                        android:drawablePadding="8dp"
+                        android:textSize="16dp"
+                        android:drawableStart="@drawable/ic_menu_lightbulb"
+                        android:background="#77000000"/>
 
                 </FrameLayout>
 

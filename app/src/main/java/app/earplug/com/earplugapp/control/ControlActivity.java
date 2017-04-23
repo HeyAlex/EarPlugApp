@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class ControlActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.control_activity);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         final Intent intent = getIntent();
         if (intent != null) {
             mAddress = intent.getStringExtra(ADDRESS);
@@ -95,18 +98,22 @@ public class ControlActivity extends AppCompatActivity {
     private void onConnectionChanged(int connectionState) {
         ImageView connection_status_img = (ImageView) findViewById(R.id.connection_status_img);
         TextView connection_status = (TextView) findViewById(R.id.connection_status);
+        TextView battery_status = (TextView) findViewById(R.id.battery_status);
         switch (connectionState) {
             case EarPlugConstants.STATE_CONNECTING:
                 connection_status_img.setImageResource(R.drawable.ic_connecting);
                 connection_status.setText(R.string.connecting);
+                battery_status.setVisibility(View.GONE);
                 break;
             case EarPlugConstants.STATE_CONNECTED:
                 connection_status_img.setImageResource(R.drawable.ic_connected);
                 connection_status.setText(R.string.connected);
+                battery_status.setVisibility(View.VISIBLE);
                 break;
             case EarPlugConstants.STATE_DISCONNECTED:
                 connection_status_img.setImageResource(R.drawable.ic_disconnected);
                 connection_status.setText(R.string.dicsonnected);
+                battery_status.setVisibility(View.GONE);
                 break;
         }
     }
