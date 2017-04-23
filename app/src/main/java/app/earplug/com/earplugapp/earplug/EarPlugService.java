@@ -40,7 +40,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
     public static final String INCOMING_CALL_START = "incoming_call_start";
     public static final String INCOMING_CALL_END = "incoming_call_end";
-    public static final String NOTIFICATION_SMS_POSTED = "notification_sms_posted";
     public static final String NOTIFICATION_GENERIC_POSTED = "notification_generic_posted";
 
     private BluetoothManager mBluetoothManager;
