@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -33,6 +34,7 @@ import app.earplug.com.earplugapp.bluetooth.gatt.operations.CharacteristicChange
 import app.earplug.com.earplugapp.cam.CamService;
 import app.earplug.com.earplugapp.notification.ConnectionNotificationMaker;
 import app.earplug.com.earplugapp.util.Preconditions;
+import app.earplug.com.earplugapp.util.PrefUtils;
 
 public class EarPlugService extends Service implements GattCharacteristicReadCallback, CharacteristicChangeListener {
 
@@ -143,25 +145,38 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         final String[] spl = value.split(":");
         if (spl[0].contains("long")) {
             if (!isRinging) {
-                startService(new Intent(this, CamService.class));
+                if(PrefUtils.getFromButtonPrefsString(this,"key_long_tap_functionality","0").equals("0")){
+                    startService(new Intent(this, CamService.class));
 
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+                        }
+                    }, 1600);
+                }else{
+                    String packagename = PrefUtils.getFromButtonPrefsString(this,"key_long_tap_selected_app","");
+                    if(!packagename.isEmpty()){
+                        Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packagename);
+                        startActivity(LaunchIntent);
                     }
-                }, 1600);
+                }
             }
 
         }else if(spl[0].contains("pressed") && spl[1].contains("2")){
+            if (!isRinging) {
+                if(PrefUtils.getFromButtonPrefs(this,"key_make_call",true)){
 
-
+                }
+            }
         }else if(spl[0].contains("pressed") && spl[1].contains("1")){
             if (isRinging) {
-                try {
-                    rejectCall();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(PrefUtils.getFromButtonPrefs(this,"key_make_call",true)){
+                    try {
+                        rejectCall();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

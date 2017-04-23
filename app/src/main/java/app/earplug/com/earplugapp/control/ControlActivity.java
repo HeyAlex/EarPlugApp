@@ -18,8 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.earplug.com.earplugapp.R;
+import app.earplug.com.earplugapp.cam.CamService;
 import app.earplug.com.earplugapp.earplug.EarPlugConstants;
+import app.earplug.com.earplugapp.earplug.EarPlugOperations;
 import app.earplug.com.earplugapp.earplug.EarPlugService;
+import app.earplug.com.earplugapp.util.PrefUtils;
 
 public class ControlActivity extends AppCompatActivity implements View.OnClickListener {
     private static String mAddress = "";
@@ -160,7 +163,15 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = null;
         switch (view.getId()){
             case R.id.light_btn:
-
+                if(PrefUtils.getFromButtonPrefsString(this,"key_long_tap_functionality","0").equals("0")) {
+                    startService(new Intent(this, CamService.class));
+                }else{
+                    String packagename = PrefUtils.getFromButtonPrefsString(this,"key_long_tap_selected_app","");
+                    if(!packagename.isEmpty()){
+                        Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packagename);
+                        startActivity(LaunchIntent);
+                    }
+                }
                 break;
             case R.id.vibro_btn:
                 intent = new Intent(this, VibroActivity.class);

@@ -46,6 +46,36 @@ public class PrefUtils {
         }
     }
 
+    public static boolean getFromButtonPrefs(Context context, String key, boolean defaultValue) {
+        try {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            return sharedPrefs.getBoolean(key, defaultValue);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+
+    public static String getFromButtonPrefsString(Context context, String key, String defaultValue) {
+        try {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            return sharedPrefs.getString(key, defaultValue);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return "defaultValue";
+        }
+    }
+
+    public static boolean getFromVibrationPrefs(Context context, String key, boolean defaultValue) {
+        try {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            return sharedPrefs.getBoolean(key, defaultValue);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+
     /**
      * @param context Context of caller activity
      * @param key     Key to delete from SharedPreferences
