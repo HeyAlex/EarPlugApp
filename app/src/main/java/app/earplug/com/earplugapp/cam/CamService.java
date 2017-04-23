@@ -29,6 +29,7 @@ import com.androidhiddencamera.HiddenCameraUtils;
 import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,6 +64,7 @@ public class CamService extends HiddenCameraService {
                         .setCameraFacing(CameraFacing.REAR_FACING_CAMERA)
                         .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                         .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                        .setImageRotation(CameraRotation.ROTATION_270)
                         .build();
 
                 startCamera(cameraConfig);

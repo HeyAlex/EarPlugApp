@@ -111,7 +111,6 @@ public class GattManager {
                     mConnectionState = STATE_DISCONNECTED;
                     broadcastConnectionUpdate();
                 }
-
             }
 
 

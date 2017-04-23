@@ -84,7 +84,8 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            final int connection_state = intent.getIntExtra(EarPlugConstants.EXTRA_CONNECTION_STATE, 0);
+            final int connection_state = intent.getIntExtra(EarPlugConstants.EXTRA_CONNECTION_STATE,
+                    EarPlugConstants.STATE_DISCONNECTED);
             if (EarPlugConstants.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
                 if (connection_state == EarPlugConstants.STATE_CONNECTED) {
                     LogCat.d(TAG, "CONNECTED");
@@ -101,24 +102,23 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
                         mEarPlug.setNotificationEnabledForButton(characteristicChangeListener);
                     }
-                }
-            } else if (connection_state == EarPlugConstants.STATE_DISCONNECTED) {
-                if (mConnectionState != EarPlugConstants.STATE_DISCONNECTED) {
+                }else if (connection_state == EarPlugConstants.STATE_DISCONNECTED) {
+                    if (mConnectionState != EarPlugConstants.STATE_DISCONNECTED) {
 
-                    mConnectionState = EarPlugConstants.STATE_DISCONNECTED;
-                    LogCat.d(TAG, "DISCONNECTED");
-                    stopForeground(true);
-                    NotificationManager nMgr = (NotificationManager) getSystemService(Context
-                            .NOTIFICATION_SERVICE);
-                    nMgr.cancelAll();
-                    isConnected = false;
-                    mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
-                    fireNotification(new ConnectionNotificationMaker(getApplicationContext())
-                            .makeNotificationConnectionChanged(false));
+                        mConnectionState = EarPlugConstants.STATE_DISCONNECTED;
+                        LogCat.d(TAG, "DISCONNECTED");
+                        stopForeground(true);
+                        NotificationManager nMgr = (NotificationManager) getSystemService(Context
+                                .NOTIFICATION_SERVICE);
+                        nMgr.cancelAll();
+                        isConnected = false;
+                        fireNotification(new ConnectionNotificationMaker(getApplicationContext())
+                                .makeNotificationConnectionChanged(false));
 
+                    }
+                } else {
+                    mConnectionState = EarPlugConstants.STATE_CONNECTING;
                 }
-            } else {
-                mConnectionState = EarPlugConstants.STATE_CONNECTING;
             }
         }
     };
