@@ -12,17 +12,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
 import com.yotadevices.util.LogCat;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 import app.earplug.com.earplugapp.bluetooth.gatt.GattCharacteristicReadCallback;
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.CharacteristicChangeListener;
@@ -85,6 +89,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                 if (connection_state == EarPlugConstants.STATE_CONNECTED) {
                     LogCat.d(TAG, "CONNECTED");
                     if (mConnectionState != EarPlugConstants.STATE_CONNECTED) {
+                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                         mConnectionState = EarPlugConstants.STATE_CONNECTED;
                         NotificationManager nMgr = (NotificationManager) getSystemService(Context
                                 .NOTIFICATION_SERVICE);
@@ -93,7 +98,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                                 new ConnectionNotificationMaker(getApplicationContext())
                                         .makeNotificationConnectionChanged(true));
                         isConnected = true;
-                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+
                         mEarPlug.setNotificationEnabledForButton(characteristicChangeListener);
                     }
                 }
@@ -138,15 +143,55 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         final String value = characteristic.getStringValue(1);
         final String[] spl = value.split(":");
         if (spl[0].contains("long")) {
-            startService(new Intent(this, CamService.class));
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+            if (isRinging) {
+                try {
+                    rejectCall();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }, 1700);
+            }else {
+                startService(new Intent(this, CamService.class));
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+                    }
+                }, 1700);
+            }
+
+        }else if(spl[0].contains("pressed") && spl[1].contains("2")){
+
+        }else if(spl[0].contains("pressed") && spl[1].contains("1")){
+
         }
+    }
+
+    private void rejectCall() {
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+            // Get the getITelephony() method
+            Class<?> classTelephony = Class.forName(telephonyManager.getClass().getName());
+            Method method = classTelephony.getDeclaredMethod("getITelephony");
+            // Disable access check
+            method.setAccessible(true);
+            // Invoke getITelephony() to get the ITelephony interface
+            Object telephonyInterface = method.invoke(telephonyManager);
+            // Get the endCall method from ITelephony
+            Class<?> telephonyInterfaceClass = Class.forName(telephonyInterface.getClass().getName());
+            Method methodEndCall = telephonyInterfaceClass.getDeclaredMethod("endCall");
+            // Invoke endCall()
+            methodEndCall.invoke(telephonyInterface);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void answerCall() {
+
     }
 
 
@@ -165,14 +210,13 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         if (intent != null) {
             if (intent.getAction() != null) {
                 if (intent.getAction().equals(INCOMING_CALL_START)) {
-                    if(!isRinging){
+                    if (!isRinging) {
                         mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
                         isRinging = true;
                     }
 
-                }
-                else if (intent.getAction().equals(INCOMING_CALL_END)){
-                    if(isRinging){
+                } else if (intent.getAction().equals(INCOMING_CALL_END)) {
+                    if (isRinging) {
                         isRinging = false;
                         mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
                     }
@@ -182,6 +226,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
         return START_STICKY;
     }
+
 
     private void registerServiceReceiver() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -245,7 +290,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     }
 
     public static void sendSelfIntent(Context context, String action) {
-        Intent serviceIntent = new Intent(context,EarPlugService.class);
+        Intent serviceIntent = new Intent(context, EarPlugService.class);
         serviceIntent.setAction(action);
         serviceIntent.setPackage(context.getPackageName());
         context.startService(serviceIntent);
