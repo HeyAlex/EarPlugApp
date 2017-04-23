@@ -35,17 +35,6 @@ public class PrefUtils {
      * @param defaultValue Value to return if no data found against given key
      * @return Return the value found against given key, default if not found or any error occurs
      */
-    public static boolean getFromPrefs(Context context, String key, boolean defaultValue) {
-
-        try {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            return sharedPrefs.getBoolean(key, defaultValue);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return defaultValue;
-        }
-    }
-
     public static boolean getFromButtonPrefs(Context context, String key, boolean defaultValue) {
         try {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -63,16 +52,6 @@ public class PrefUtils {
         } catch (NullPointerException e) {
             e.printStackTrace();
             return "defaultValue";
-        }
-    }
-
-    public static boolean getFromVibrationPrefs(Context context, String key, boolean defaultValue) {
-        try {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            return sharedPrefs.getBoolean(key, defaultValue);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return defaultValue;
         }
     }
 

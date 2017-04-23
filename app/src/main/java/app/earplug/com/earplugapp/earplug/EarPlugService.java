@@ -11,7 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -20,13 +19,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
 import com.yotadevices.util.LogCat;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 import app.earplug.com.earplugapp.bluetooth.gatt.GattCharacteristicReadCallback;
@@ -103,7 +100,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
                         mEarPlug.setNotificationEnabledForButton(characteristicChangeListener);
                     }
-                }else if (connection_state == EarPlugConstants.STATE_DISCONNECTED) {
+                } else if (connection_state == EarPlugConstants.STATE_DISCONNECTED) {
                     if (mConnectionState != EarPlugConstants.STATE_DISCONNECTED) {
 
                         mConnectionState = EarPlugConstants.STATE_DISCONNECTED;
@@ -145,7 +142,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         final String[] spl = value.split(":");
         if (spl[0].contains("long")) {
             if (!isRinging) {
-                if(PrefUtils.getFromButtonPrefsString(this,"key_long_tap_functionality","0").equals("0")){
+                if (PrefUtils.getFromButtonPrefsString(this, "key_long_tap_functionality", "0").equals("0")) {
                     startService(new Intent(this, CamService.class));
 
                     handler.postDelayed(new Runnable() {
@@ -154,24 +151,24 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                             mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                         }
                     }, 1600);
-                }else{
-                    String packagename = PrefUtils.getFromButtonPrefsString(this,"key_long_tap_selected_app","");
-                    if(!packagename.isEmpty()){
+                } else {
+                    String packagename = PrefUtils.getFromButtonPrefsString(this, "key_long_tap_selected_app", "");
+                    if (!packagename.isEmpty()) {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packagename);
                         startActivity(LaunchIntent);
                     }
                 }
             }
 
-        }else if(spl[0].contains("pressed") && spl[1].contains("2")){
+        } else if (spl[0].contains("pressed") && spl[1].contains("2")) {
             if (!isRinging) {
-                if(PrefUtils.getFromButtonPrefs(this,"key_make_call",true)){
+                if (PrefUtils.getFromButtonPrefs(this, "key_make_call", true)) {
 
                 }
             }
-        }else if(spl[0].contains("pressed") && spl[1].contains("1")){
+        } else if (spl[0].contains("pressed") && spl[1].contains("1")) {
             if (isRinging) {
-                if(PrefUtils.getFromButtonPrefs(this,"key_make_call",true)){
+                if (PrefUtils.getFromButtonPrefs(this, "key_reject_call", true)) {
                     try {
                         rejectCall();
                     } catch (Exception e) {
@@ -206,7 +203,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     }
 
 
-
     public class LocalBinder extends Binder {
         public EarPlugService getService() {
             return EarPlugService.this;
@@ -223,19 +219,26 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
             if (intent.getAction() != null) {
                 if (intent.getAction().equals(INCOMING_CALL_START)) {
                     if (!isRinging) {
-                        mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
-                        isRinging = true;
+                        if (PrefUtils.getFromButtonPrefs(this, "key_enable_vibro_dialer", true)) {
+                            mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
+                        }
                     }
+                    isRinging = true;
+                }
 
-                } else if (intent.getAction().equals(INCOMING_CALL_END)) {
-                    if (isRinging) {
-                        isRinging = false;
-                        mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
+            } else if (intent.getAction().equals(INCOMING_CALL_END)) {
+                if (isRinging) {
+                    isRinging = false;
+                    mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
+                }
+            } else if (intent.getAction().equals(NOTIFICATION_GENERIC_POSTED)) {
+                if (isRinging) {
+                    if (PrefUtils.getFromButtonPrefs(this, "key_enable_vibro_notifications", true)) {
+                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                     }
                 }
             }
         }
-
         return START_STICKY;
     }
 
