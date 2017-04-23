@@ -84,7 +84,7 @@ public class GattManager {
         }
 
         mDevice = mBluetoothAdapter.getRemoteDevice(address);
-        mDevice.createBond();
+        //mDevice.createBond();
         mDevice.connectGatt(mContext, true, new BluetoothGattCallback() {
             @Override
             public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {

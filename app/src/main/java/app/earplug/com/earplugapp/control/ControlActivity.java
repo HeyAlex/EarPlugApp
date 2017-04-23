@@ -55,6 +55,9 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
         View find_me_btn = findViewById(R.id.find_me_btn);
         find_me_btn.setOnClickListener(this);
+
+        View connection_status_img = findViewById(R.id.connection_status_img);
+        connection_status_img.setOnClickListener(this);
     }
 
     @Override
@@ -125,7 +128,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 disc_con_button.setVisibility(View.GONE);
                 connection_status.setText(R.string.connecting);
                 battery_status.setVisibility(View.GONE);
-                find_me_btn.setVisibility(View.VISIBLE);
+                find_me_btn.setVisibility(View.GONE);
                 break;
             case EarPlugConstants.STATE_CONNECTED:
                 isConnected = true;
@@ -135,7 +138,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                         mBluetoothLeService.getEarPlug().disconnect();
                     }
                 });
-                disc_con_button.setVisibility(View.GONE);
+                disc_con_button.setVisibility(View.VISIBLE);
                 disc_con_button.setText(R.string.disconnect_button);
                 connection_status_img.setImageResource(R.drawable.ic_connected);
                 connection_status.setText(R.string.connected);
@@ -187,6 +190,9 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                     mBluetoothLeService.findEarPlug(newState);
                 }
                 initFindButton();
+                break;
+            case R.id.connection_status_img:
+                mBluetoothLeService.setBluetoothDevice(mAddress, mName);
                 break;
         }
         if (intent != null) {

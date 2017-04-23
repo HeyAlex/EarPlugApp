@@ -6,7 +6,7 @@ import app.earplug.com.earplugapp.bluetooth.gatt.GattOperationBundle;
 
 public abstract class GattOperation {
 
-    private static final int DEFAULT_TIMEOUT_IN_MILLIS = 10000;
+    private static final int DEFAULT_TIMEOUT_IN_MILLIS = 1000;
     private GattOperationBundle mBundle;
 
     public abstract void execute(BluetoothGatt bluetoothGatt);
