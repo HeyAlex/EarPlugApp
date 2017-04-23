@@ -207,9 +207,11 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("FIND DEVCIE OPTION")
+                        .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 , 1000, 1000, 1000, 1000 , 1000, 1000, 1000, 1000 , 1000, 1000, 1000, 1000 })
                         .setLights(Color.RED, 3000, 3000);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(alarmSound);
+        fireNotification(mBuilder.build());
     }
 
     public void callLastcall() {

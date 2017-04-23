@@ -1,19 +1,14 @@
 package app.earplug.com.earplugapp.control;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.CallLog;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,11 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.earplug.com.earplugapp.R;
-import app.earplug.com.earplugapp.cam.CamService;
 import app.earplug.com.earplugapp.earplug.EarPlugConstants;
-import app.earplug.com.earplugapp.earplug.EarPlugOperations;
 import app.earplug.com.earplugapp.earplug.EarPlugService;
-import app.earplug.com.earplugapp.util.PrefUtils;
 
 public class ControlActivity extends AppCompatActivity implements View.OnClickListener {
     private static String mAddress = "";
@@ -173,7 +165,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         Intent intent = null;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.light_btn:
                 intent = new Intent(this, LightActivity.class);
                 break;
@@ -192,7 +184,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 initFindButton();
                 break;
         }
-        if (intent != null){
+        if (intent != null) {
             this.startActivity(intent);
         }
 
