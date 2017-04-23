@@ -113,7 +113,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
             case EarPlugConstants.STATE_CONNECTING:
                 isConnected = false;
                 connection_status_img.setImageResource(R.drawable.ic_connecting);
-                disc_con_button.setVisibility(View.INVISIBLE);
+                disc_con_button.setVisibility(View.GONE);
                 connection_status.setText(R.string.connecting);
                 battery_status.setVisibility(View.GONE);
                 break;
@@ -125,7 +125,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                         mBluetoothLeService.getEarPlug().disconnect();
                     }
                 });
-                disc_con_button.setVisibility(View.VISIBLE);
+                disc_con_button.setVisibility(View.GONE);
                 disc_con_button.setText(R.string.disconnect_button);
                 connection_status_img.setImageResource(R.drawable.ic_connected);
                 connection_status.setText(R.string.connected);
