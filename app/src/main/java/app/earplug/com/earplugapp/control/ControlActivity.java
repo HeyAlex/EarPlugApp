@@ -168,7 +168,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = null;
         switch (view.getId()){
             case R.id.light_btn:
-
+                intent = new Intent(this, LightActivity.class);
                 break;
             case R.id.vibro_btn:
                 intent = new Intent(this, VibroActivity.class);

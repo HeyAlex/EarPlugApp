@@ -19,7 +19,7 @@ public class LightActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.vibro_activity);
+        setContentView(R.layout.light_activity);
         initToolbar();
     }
 

@@ -1,7 +1,6 @@
 package app.earplug.com.earplugapp.control;
 
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 
 import app.earplug.com.earplugapp.R;
@@ -11,11 +10,11 @@ import app.earplug.com.earplugapp.R;
  *         23.04.17.
  */
 
-public class VibroPreferenceFragment extends PreferenceFragment {
+public class LightPreferenceFragment extends PreferenceFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        addPreferencesFromResource(R.xml.vibropreference);
+        addPreferencesFromResource(R.xml.lightpreference);
     }
 }

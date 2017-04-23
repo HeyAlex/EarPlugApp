@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.jrummyapps.android.colorpicker.ColorPreference
+        android:defaultValue="@android:color/white"
+        android:key="key_color"
+        android:summary="Pick a color to light up your plug"
+        android:title="Color"
+        app:cpv_allowCustom="false"
+        app:cpv_dialogType="preset"
+        app:cpv_showColorShades="false" />
+</PreferenceScreen>
