@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EarPlugApp</string>
+    <string name="app_name">Uhovertka!!!</string>
     <string name="connected_notification">EarPlug connected</string>
     <string name="disconnected_notification">EarPlug disconnected</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
@@ -12,6 +12,9 @@
     <string name="connect_button">Reconnect to EarPlug</string>
     <string name="disconnect_button">Disconnect EarPlug</string>
     <string name="error_on_reconnect">NO ADDRESS FOR LAST CONNECTION</string>
+
+    <string name="find_plug">Find my plug</string>
+    <string name="stop_find_plug">I found it!</string>
 
     <string-array name="long_tap_strings">
     <item>Make a photo</item>

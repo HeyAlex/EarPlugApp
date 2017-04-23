@@ -61,6 +61,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     public EarPlug mEarPlug;
     public static boolean isConnected;
     public static boolean isRinging;
+    public static boolean isSearching;
 
     @Override
     public void onCreate() {
@@ -144,6 +145,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     }
 
     public void findEarPlug(boolean onStartFinding){
+        isSearching = onStartFinding;
         if(onStartFinding){
             mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
         }else {

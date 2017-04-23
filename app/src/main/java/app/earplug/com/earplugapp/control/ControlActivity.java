@@ -60,6 +60,9 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
         View vibro_btn = findViewById(R.id.vibro_btn);
         vibro_btn.setOnClickListener(this);
+
+        View find_me_btn = findViewById(R.id.find_me_btn);
+        find_me_btn.setOnClickListener(this);
     }
 
     @Override
@@ -117,6 +120,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         ImageView connection_status_img = (ImageView) findViewById(R.id.connection_status_img);
         TextView connection_status = (TextView) findViewById(R.id.connection_status);
         TextView battery_status = (TextView) findViewById(R.id.battery_status);
+        View find_me_btn = findViewById(R.id.find_me_btn);
         switch (connectionState) {
             case EarPlugConstants.STATE_CONNECTING:
                 isConnected = false;
@@ -124,6 +128,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 disc_con_button.setVisibility(View.GONE);
                 connection_status.setText(R.string.connecting);
                 battery_status.setVisibility(View.GONE);
+                find_me_btn.setVisibility(View.VISIBLE);
                 break;
             case EarPlugConstants.STATE_CONNECTED:
                 isConnected = true;
@@ -138,6 +143,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 connection_status_img.setImageResource(R.drawable.ic_connected);
                 connection_status.setText(R.string.connected);
                 battery_status.setVisibility(View.VISIBLE);
+                find_me_btn.setVisibility(View.VISIBLE);
                 break;
             case EarPlugConstants.STATE_DISCONNECTED:
                 isConnected = false;
@@ -152,6 +158,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 connection_status_img.setImageResource(R.drawable.ic_disconnected);
                 connection_status.setText(R.string.dicsonnected);
                 battery_status.setVisibility(View.GONE);
+                find_me_btn.setVisibility(View.GONE);
                 break;
         }
     }
@@ -176,10 +183,35 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.buttons_btn:
                 intent = new Intent(this, ButtonsActivity.class);
                 break;
+            case R.id.find_me_btn:
+                boolean oldState = EarPlugService.isSearching;
+                boolean newState = !oldState;
+                if (mBluetoothLeService != null && EarPlugService.isConnected) {
+                    mBluetoothLeService.findEarPlug(newState);
+                }
+                initFindButton();
+                break;
         }
         if (intent != null){
             this.startActivity(intent);
         }
 
+    }
+
+    private void initFindButton(){
+        TextView findPlugText = (TextView) findViewById(R.id.find_plug_txt);
+        ImageView findPlugImg = (ImageView) findViewById(R.id.find_plug_img);
+        View find_me_btn = findViewById(R.id.find_me_btn);
+        if (EarPlugService.isSearching){
+            findPlugText.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.ic_notifications_off_white_24dp), null, null, null);
+            findPlugText.setText(R.string.stop_find_plug);
+            findPlugImg.setImageResource(R.drawable.ic_notifications_off_white_48dp);
+            find_me_btn.setBackgroundResource(R.drawable.card_alert_bg);
+        } else{
+            findPlugText.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.ic_notifications_active_white_24dp), null, null, null);
+            findPlugText.setText(R.string.find_plug);
+            findPlugImg.setImageResource(R.drawable.ic_notifications_active_white_48dp);
+            find_me_btn.setBackgroundResource(R.drawable.card_primary_bg);
+        }
     }
 }

@@ -99,8 +99,8 @@
                     android:minWidth="48dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="16dp"
                         android:src="@drawable/ic_lightbulb_outline_white_48dp" />
@@ -134,8 +134,8 @@
                     android:minWidth="48dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="16dp"
                         android:src="@drawable/ic_vibration_white_48dp" />
@@ -177,8 +177,8 @@
                     android:minWidth="48dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="16dp"
                         android:src="@drawable/ic_touch_app_white_48dp" />
@@ -205,31 +205,34 @@
                     android:layout_height="match_parent"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_button_logo_1"
+                    android:background="@drawable/card_primary_bg"
                     android:elevation="2dp"
                     android:foreground="?attr/selectableItemBackground"
                     android:minHeight="48dp"
                     android:minWidth="48dp"
-                    android:visibility="invisible">
+                    android:visibility="visible">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:id="@+id/find_plug_img"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="16dp"
-                        android:src="@drawable/ic_vibration_white_48dp" />
+                        android:src="@drawable/ic_notifications_active_white_48dp" />
 
                     <TextView
+                        android:id="@+id/find_plug_txt"
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_gravity="bottom"
                         android:background="#77000000"
                         android:drawablePadding="8dp"
-                        android:drawableStart="@drawable/ic_menu_lightbulb"
+                        android:drawableLeft="@drawable/ic_notifications_active_white_24dp"
                         android:gravity="center_vertical"
                         android:paddingStart="8dp"
-                        android:text="Find"
+                        android:text="@string/find_plug"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@android:color/white"
                         android:textSize="16dp" />
 
                 </FrameLayout>
