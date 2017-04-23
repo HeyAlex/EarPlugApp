@@ -82,6 +82,8 @@
                 android:layout_height="0dp">
 
                 <FrameLayout
+                    android:id="@+id/light_btn"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:minHeight="48dp"
@@ -106,12 +108,15 @@
                         android:text="Light"
                         android:drawablePadding="8dp"
                         android:textSize="16dp"
+                        android:textColor="@android:color/white"
                         android:drawableStart="@drawable/ic_menu_lightbulb"
                         android:background="#77000000"/>
 
                 </FrameLayout>
 
                 <FrameLayout
+                    android:id="@+id/vibro_btn"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:minHeight="48dp"
@@ -134,6 +139,7 @@
                         android:layout_gravity="bottom"
                         android:gravity="center_vertical"
                         android:paddingStart="8dp"
+                        android:textColor="@android:color/white"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:text="Vibration"
                         android:drawablePadding="8dp"
@@ -152,6 +158,8 @@
                 android:layout_height="0dp">
 
                 <FrameLayout
+                    android:id="@+id/buttons_btn"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:minHeight="48dp"
@@ -175,6 +183,7 @@
                         android:gravity="center_vertical"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:text="Buttons"
+                        android:textColor="@android:color/white"
                         android:drawablePadding="8dp"
                         android:textSize="16dp"
                         android:drawableStart="@drawable/ic_menu_button"
@@ -183,6 +192,8 @@
                 </FrameLayout>
 
                 <FrameLayout
+                    android:id="@+id/find_me_btn"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_margin="4dp"
                     android:visibility="invisible"
                     android:layout_weight="1"

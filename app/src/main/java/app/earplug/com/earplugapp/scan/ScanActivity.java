@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -220,7 +221,8 @@ public class ScanActivity extends AppCompatActivity implements DeviceAdapter.Cli
             intent.putExtra(ControlActivity.NAME, device.getName());
             startActivity(intent);
         } else {
-            Toast.makeText(this, "This device not supported", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mToolbar, "This device not supported", Snackbar
+                    .LENGTH_LONG).show();
         }
 
     }

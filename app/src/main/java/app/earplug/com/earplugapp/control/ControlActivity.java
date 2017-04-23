@@ -21,7 +21,7 @@ import app.earplug.com.earplugapp.R;
 import app.earplug.com.earplugapp.earplug.EarPlugConstants;
 import app.earplug.com.earplugapp.earplug.EarPlugService;
 
-public class ControlActivity extends AppCompatActivity {
+public class ControlActivity extends AppCompatActivity implements View.OnClickListener {
     private static String mAddress = "";
     private static String mName = "";
     private Button disc_con_button;
@@ -43,23 +43,32 @@ public class ControlActivity extends AppCompatActivity {
             mAddress = intent.getStringExtra(ADDRESS);
             mName = intent.getStringExtra(NAME);
         }
+
+        View light_btn = findViewById(R.id.light_btn);
+        light_btn.setOnClickListener(this);
+
+        View buttons_btn = findViewById(R.id.buttons_btn);
+        buttons_btn.setOnClickListener(this);
+
+        View vibro_btn = findViewById(R.id.vibro_btn);
+        vibro_btn.setOnClickListener(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent bindIntent = new Intent(this, EarPlugService.class);
-        startService(bindIntent);
-        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        registerServiceReceiver();
+//        Intent bindIntent = new Intent(this, EarPlugService.class);
+//        startService(bindIntent);
+//        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+//        registerServiceReceiver();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
+//        unbindService(mServiceConnection);
+//        mBluetoothLeService = null;
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
     }
 
     // Handles various events fired by the CometaService.
@@ -146,4 +155,23 @@ public class ControlActivity extends AppCompatActivity {
                 mGattUpdateReceiver, intentFilter);
     }
 
+    @Override
+    public void onClick(View view) {
+        Intent intent = null;
+        switch (view.getId()){
+            case R.id.light_btn:
+
+                break;
+            case R.id.vibro_btn:
+                intent = new Intent(this, VibroActivity.class);
+                break;
+            case R.id.buttons_btn:
+                intent = new Intent(this, ButtonsActivity.class);
+                break;
+        }
+        if (intent != null){
+            this.startActivity(intent);
+        }
+
+    }
 }

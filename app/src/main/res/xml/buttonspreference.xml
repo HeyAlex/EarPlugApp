@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:key="single_tap_category"
+        android:title="Single tap">
+
+        <SwitchPreference android:key="key_reject_call"
+            android:title="Reject call"
+            android:summary="Reject incoming call by single tap on button"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="double_tap_category"
+        android:title="Double tap">
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="long_tap_category"
+        android:title="Long tap">
+        <ListPreference
+        android:entries="@array/long_tap_strings"
+        android:entryValues="@array/long_tap_strings_values"
+        android:key="key_long_tap_functionality"
+        android:summary="%s"
+        android:title="Long tap functionality" />
+
+        <ListPreference
+            android:defaultValue=""
+            android:key="key_long_tap_selected_app"
+            android:dependency="key_long_tap_functionality"
+            android:summary="%s"
+            android:title="Select app to launch" />
+    </PreferenceCategory>
+</PreferenceScreen>

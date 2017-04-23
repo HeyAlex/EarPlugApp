@@ -12,4 +12,13 @@
     <string name="connect_button">Reconnect to EarPlug</string>
     <string name="disconnect_button">Disconnect EarPlug</string>
     <string name="error_on_reconnect">NO ADDRESS FOR LAST CONNECTION</string>
+
+    <string-array name="long_tap_strings">
+    <item>Make a photo</item>
+    <item>Launch application</item>
+    </string-array>
+    <string-array name="long_tap_strings_values" translatable="false">
+    <item>0</item>
+    <item>1</item>
+    </string-array>
 </resources>

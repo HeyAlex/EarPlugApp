@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:key="dialer_category"
+        android:title="Dialer">
+
+        <SwitchPreference android:key="key_enable_vibro_dialer"
+            android:title="Vibrate on incoming call"
+            android:summary="Your plug will vibrate when your phone is ringing"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="notification_category"
+        android:title="Notifications">
+        <SwitchPreference android:key="key_enable_vibro_notifications"
+            android:title="Vibrate on new notification"
+            android:summary="Your plug will vibrate when your receive new notification"/>
+    </PreferenceCategory>
+</PreferenceScreen>

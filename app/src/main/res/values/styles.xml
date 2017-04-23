@@ -8,7 +8,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorAccent">#121733</item>
         <item name="windowActionBarOverlay">true</item>
-        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
 
