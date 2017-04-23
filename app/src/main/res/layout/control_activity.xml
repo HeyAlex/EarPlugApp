@@ -37,7 +37,7 @@
                 android:layout_marginEnd="6dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textAllCaps="true"
-                android:text="Dicsonnected"/>
+                android:text="@string/dicsonnected"/>
         </RelativeLayout>
 
         <LinearLayout

@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import app.earplug.com.earplugapp.R;
 import app.earplug.com.earplugapp.earplug.EarPlugConstants;
@@ -91,8 +93,21 @@ public class ControlActivity extends AppCompatActivity {
 
 
     private void onConnectionChanged(int connectionState) {
+        ImageView connection_status_img = (ImageView) findViewById(R.id.connection_status_img);
+        TextView connection_status = (TextView) findViewById(R.id.connection_status);
         switch (connectionState) {
-
+            case EarPlugConstants.STATE_CONNECTING:
+                connection_status_img.setImageResource(R.drawable.ic_connecting);
+                connection_status.setText(R.string.connecting);
+                break;
+            case EarPlugConstants.STATE_CONNECTED:
+                connection_status_img.setImageResource(R.drawable.ic_connected);
+                connection_status.setText(R.string.connected);
+                break;
+            case EarPlugConstants.STATE_DISCONNECTED:
+                connection_status_img.setImageResource(R.drawable.ic_disconnected);
+                connection_status.setText(R.string.dicsonnected);
+                break;
         }
     }
 
