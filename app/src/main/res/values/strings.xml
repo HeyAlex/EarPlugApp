@@ -6,7 +6,7 @@
     <string name="unknown_device">Unknown Device</string>
     <string name="search_devices">Search devices</string>
     <string name="ble_not_supported">BLE is not supported</string>
-    <string name="dicsonnected">Dicsonnected</string>
+    <string name="dicsonnected">Disconnected</string>
     <string name="connected">Connected</string>
     <string name="connecting">Connecting</string>
     <string name="connect_button">Reconnect to EarPlug</string>

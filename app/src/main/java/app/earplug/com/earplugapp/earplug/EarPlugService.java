@@ -1,5 +1,6 @@
 package app.earplug.com.earplugapp.earplug;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -11,11 +12,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.provider.CallLog;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -163,7 +168,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         } else if (spl[0].contains("pressed") && spl[1].contains("2")) {
             if (!isRinging) {
                 if (PrefUtils.getFromButtonPrefs(this, "key_make_call", true)) {
-
+                    callLastcall();
                 }
             }
         } else if (spl[0].contains("pressed") && spl[1].contains("1")) {
@@ -179,7 +184,22 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         }
     }
 
-
+    public void callLastcall() {
+        String lastCalledNumber = CallLog.Calls.getLastOutgoingCall(this);
+        Uri call = Uri.parse("tel:" + lastCalledNumber);
+        Intent surf = new Intent(Intent.ACTION_CALL, call);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(surf);
+    }
     private void rejectCall() {
         try {
             TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);

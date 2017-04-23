@@ -1,14 +1,19 @@
 package app.earplug.com.earplugapp.control;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.CallLog;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -163,15 +168,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = null;
         switch (view.getId()){
             case R.id.light_btn:
-                if(PrefUtils.getFromButtonPrefsString(this,"key_long_tap_functionality","0").equals("0")) {
-                    startService(new Intent(this, CamService.class));
-                }else{
-                    String packagename = PrefUtils.getFromButtonPrefsString(this,"key_long_tap_selected_app","");
-                    if(!packagename.isEmpty()){
-                        Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packagename);
-                        startActivity(LaunchIntent);
-                    }
-                }
+
                 break;
             case R.id.vibro_btn:
                 intent = new Intent(this, VibroActivity.class);
