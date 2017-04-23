@@ -35,7 +35,6 @@
 
         <ListPreference
             android:defaultValue=""
-            android:dependency="key_long_tap_functionality"
             android:key="key_long_tap_selected_app"
             android:summary="%s"
             android:title="Select app to launch" />
