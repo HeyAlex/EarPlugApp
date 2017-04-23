@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -21,6 +23,7 @@ import android.os.Looper;
 import android.provider.CallLog;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -31,6 +34,7 @@ import com.yotadevices.util.LogCat;
 
 import java.lang.reflect.Method;
 
+import app.earplug.com.earplugapp.R;
 import app.earplug.com.earplugapp.bluetooth.gatt.GattCharacteristicReadCallback;
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.CharacteristicChangeListener;
 import app.earplug.com.earplugapp.cam.CamService;
@@ -139,6 +143,14 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         }
     }
 
+    public void findEarPlug(boolean onStartFinding){
+        if(onStartFinding){
+            mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
+        }else {
+            mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
+        }
+    }
+
     Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -181,7 +193,21 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                     }
                 }
             }
+        }else if (spl[0].contains("pressed") && Integer.valueOf(spl[1]) >= 5) {
+            if (!isRinging) {
+               findPhone();
+            }
         }
+    }
+
+    public void findPhone(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("FIND DEVCIE OPTION")
+                        .setLights(Color.RED, 3000, 3000);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        mBuilder.setSound(alarmSound);
     }
 
     public void callLastcall() {
