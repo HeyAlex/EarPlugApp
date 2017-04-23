@@ -117,10 +117,12 @@ public class ScanActivity extends AppCompatActivity implements DeviceAdapter.Cli
     public void onScanningStatusChange() {
         View progress = findViewById(R.id.toolbar_progress_bar);
         View refresh = findViewById(R.id.refresh_button);
+        View emptyView = findViewById(R.id.empty_view);
         if (mScanning) {
             progress.setVisibility(View.VISIBLE);
             refresh.setVisibility(View.GONE);
         } else {
+            emptyView.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
             refresh.setVisibility(View.VISIBLE);
         }
@@ -212,10 +214,15 @@ public class ScanActivity extends AppCompatActivity implements DeviceAdapter.Cli
     public void onItemClick(int position, View v) {
         BluetoothDevice device = mDeviceAdapter.getItem(position).getDevice();
 
-        Intent intent = new Intent(ScanActivity.this, ControlActivity.class);
-        intent.putExtra(ControlActivity.ADDRESS, device.getAddress());
-        intent.putExtra(ControlActivity.NAME, device.getName());
-        startActivity(intent);
+        if ("EarPlug".equals(device.getName())){
+            Intent intent = new Intent(ScanActivity.this, ControlActivity.class);
+            intent.putExtra(ControlActivity.ADDRESS, device.getAddress());
+            intent.putExtra(ControlActivity.NAME, device.getName());
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "This device not supported", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

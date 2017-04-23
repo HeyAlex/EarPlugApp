@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Copyright (C) 2017 YotaDevices, LLC - All Rights Reserved.
-
-    Confidential and Proprietary.
-    Unauthorized copying of this file, via any medium is strictly prohibited.
--->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/toolbar_color"
-        android:titleTextColor="@color/white">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <LinearLayout
-            android:id="@+id/scanning_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:visibility="visible">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
-                android:gravity="start"
-                android:id="@+id/refresh_button"
-                style="?android:attr/progress"
+            <LinearLayout
+                android:id="@+id/scanning_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SCAN"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:visibility="visible" />
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
-            <ProgressBar
-                android:id="@+id/toolbar_progress_bar"
-                style="?android:attr/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminateTint="@android:color/white"
-                android:indeterminateTintMode="src_in"
-                android:visibility="gone" />
-        </LinearLayout>
-    </android.support.v7.widget.Toolbar>
+                <TextView
+                    android:id="@+id/refresh_button"
+                    style="?android:attr/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="SCAN"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <ProgressBar
+                    android:id="@+id/toolbar_progress_bar"
+                    style="?android:attr/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@android:color/white"
+                    android:indeterminateTintMode="src_in"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/device_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_light_background" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/splash_screen"/>
+
+</android.support.design.widget.CoordinatorLayout>

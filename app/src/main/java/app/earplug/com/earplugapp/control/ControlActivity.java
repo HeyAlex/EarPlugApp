@@ -76,7 +76,7 @@ public class ControlActivity extends AppCompatActivity {
             mBluetoothLeService = ((EarPlugService.LocalBinder) service).getService();
             if (mBluetoothLeService.getConnectionState() != EarPlugConstants.STATE_CONNECTED) {
                mBluetoothLeService.setBluetoothDevice(mAddress, mName);
-           }
+            }
 
            // mNameText.setText(mBluetoothLeService.getCometa().getName());
            // mAddresText.setText(mBluetoothLeService.getCometa().getAddres());
