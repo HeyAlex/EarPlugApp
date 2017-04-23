@@ -60,18 +60,18 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onStart() {
         super.onStart();
-//        Intent bindIntent = new Intent(this, EarPlugService.class);
-//        startService(bindIntent);
-//        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-//        registerServiceReceiver();
+        Intent bindIntent = new Intent(this, EarPlugService.class);
+        startService(bindIntent);
+        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        registerServiceReceiver();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        unbindService(mServiceConnection);
-//        mBluetoothLeService = null;
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
+        unbindService(mServiceConnection);
+        mBluetoothLeService = null;
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
     }
 
     // Handles various events fired by the CometaService.
@@ -91,8 +91,13 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mName = mBluetoothLeService.getEarPlug().getmName();
-            mAddress = mBluetoothLeService.getEarPlug().getmAddres();
+            try{
+                mName = mBluetoothLeService.getEarPlug().getmName();
+                mAddress = mBluetoothLeService.getEarPlug().getmAddres();
+            }catch (NullPointerException ex){
+
+            }
+
             mBluetoothLeService = ((EarPlugService.LocalBinder) service).getService();
             if (mBluetoothLeService.getConnectionState() != EarPlugConstants.STATE_CONNECTED) {
                 mBluetoothLeService.setBluetoothDevice(mAddress, mName);

@@ -274,17 +274,16 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                         }
                     }
                     isRinging = true;
-                }
-
-            } else if (intent.getAction().equals(INCOMING_CALL_END)) {
-                if (isRinging) {
-                    isRinging = false;
-                    mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
-                }
-            } else if (intent.getAction().equals(NOTIFICATION_GENERIC_POSTED)) {
-                if (isRinging) {
-                    if (PrefUtils.getFromButtonPrefs(this, "key_enable_vibro_notifications", true)) {
-                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+                }else if (intent.getAction().equals(INCOMING_CALL_END)) {
+                    if (isRinging) {
+                        isRinging = false;
+                        mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
+                    }
+                } else if (intent.getAction().equals(NOTIFICATION_GENERIC_POSTED)) {
+                    if (isRinging) {
+                        if (PrefUtils.getFromButtonPrefs(this, "key_enable_vibro_notifications", true)) {
+                            mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+                        }
                     }
                 }
             }
