@@ -3,6 +3,7 @@ package app.earplug.com.earplugapp.cam;
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -89,17 +90,26 @@ public class CamService extends HiddenCameraService {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setLargeIcon(bitmap)
-                .setContentTitle("Selfie DONE")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("selfie"))
-                .setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_SOUND);
-        //Do something with the bitmap
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+
         Random rand = new Random();
         int selected = rand.nextInt(1000);
-        MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, String.valueOf(selected) , String.valueOf(selected));
+        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,
+                String.valueOf(selected) , String.valueOf(selected)));
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri,"image/*");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,intent ,0);
+        Notification notif = new Notification.Builder(this)
+                .setContentTitle("EarPlug Selfie")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .setStyle(new Notification.BigPictureStyle().bigPicture(bitmap))
+                .build();
+        notif.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(100, notif);
         stopSelf();
     }
 

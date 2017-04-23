@@ -36,10 +36,10 @@ public class EarPlug {
         mGattMager.queue(notificationOperation);
     }
 
-    public void changeVibrationMode() {
+    public void changeVibrationMode(byte type) {
         byte[] data;
 
-        byte b = EarPlugOperations.MID_ALERT;
+        byte b = type;
         data = new byte[]{b};
 
         GattCharacteristicWriteOperation changeLedState = new GattCharacteristicWriteOperation(

@@ -20,9 +20,9 @@ public class PhoneStateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String state = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
         if (TelephonyManager.EXTRA_STATE_RINGING.equals(state)) {
-            EarPlugService.sendSelfIntent(context, EarPlugService.INCOMING_CALL_START, null);
+            EarPlugService.sendSelfIntent(context, EarPlugService.INCOMING_CALL_START);
         } else {
-            EarPlugService.sendSelfIntent(context, EarPlugService.INCOMING_CALL_END, null);
+            EarPlugService.sendSelfIntent(context, EarPlugService.INCOMING_CALL_END);
         }
     }
 }

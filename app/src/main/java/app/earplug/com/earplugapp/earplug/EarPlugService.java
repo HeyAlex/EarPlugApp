@@ -1,6 +1,5 @@
 package app.earplug.com.earplugapp.earplug;
 
-import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -12,11 +11,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -50,6 +49,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     private CameraConfig mCameraConfig;
     public EarPlug mEarPlug;
     public static boolean isConnected;
+    public static boolean isRinging;
 
     @Override
     public void onCreate() {
@@ -93,7 +93,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                                 new ConnectionNotificationMaker(getApplicationContext())
                                         .makeNotificationConnectionChanged(true));
                         isConnected = true;
-                        mEarPlug.changeVibrationMode();
+                        mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                         mEarPlug.setNotificationEnabledForButton(characteristicChangeListener);
                     }
                 }
@@ -107,6 +107,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                             .NOTIFICATION_SERVICE);
                     nMgr.cancelAll();
                     isConnected = false;
+                    mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                     fireNotification(new ConnectionNotificationMaker(getApplicationContext())
                             .makeNotificationConnectionChanged(false));
 
@@ -130,17 +131,23 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         }
     }
 
+    Handler handler = new Handler(Looper.getMainLooper());
+
     @Override
     public void onCharacteristicChanged(BluetoothGattCharacteristic characteristic) {
         final String value = characteristic.getStringValue(1);
         final String[] spl = value.split(":");
-        if(spl[0].contains("long")){
+        if (spl[0].contains("long")) {
             startService(new Intent(this, CamService.class));
-            mEarPlug.changeVibrationMode();
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
+                }
+            }, 1700);
         }
-
     }
-
 
 
     public class LocalBinder extends Binder {
@@ -154,6 +161,23 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         LogCat.d(TAG, "onStartCommand");
         if (mBluetoothDeviceAddress.isEmpty()) {
             final boolean initialized = initialize();
+        }
+        if (intent != null) {
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(INCOMING_CALL_START)) {
+                    if(!isRinging){
+                        mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
+                        isRinging = true;
+                    }
+
+                }
+                else if (intent.getAction().equals(INCOMING_CALL_END)){
+                    if(isRinging){
+                        isRinging = false;
+                        mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
+                    }
+                }
+            }
         }
 
         return START_STICKY;
@@ -216,13 +240,14 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         return mConnectionState;
     }
 
-    public EarPlug getCometa() {
+    public EarPlug getEarPlug() {
         return mEarPlug;
     }
 
-    public static void sendSelfIntent(Context context, String action, Bundle extras){
-        Intent intent = new Intent(action);
-        intent.putExtras(extras);
-        context.startService(intent);
+    public static void sendSelfIntent(Context context, String action) {
+        Intent serviceIntent = new Intent(context,EarPlugService.class);
+        serviceIntent.setAction(action);
+        serviceIntent.setPackage(context.getPackageName());
+        context.startService(serviceIntent);
     }
 }
