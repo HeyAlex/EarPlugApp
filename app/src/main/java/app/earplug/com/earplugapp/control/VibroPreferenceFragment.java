@@ -1,7 +1,6 @@
 package app.earplug.com.earplugapp.control;
 
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 
 import app.earplug.com.earplugapp.R;

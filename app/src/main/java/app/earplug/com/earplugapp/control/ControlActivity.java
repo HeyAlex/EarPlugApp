@@ -94,10 +94,10 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            try{
+            try {
                 mName = mBluetoothLeService.getEarPlug().getmName();
                 mAddress = mBluetoothLeService.getEarPlug().getmAddres();
-            }catch (NullPointerException ex){
+            } catch (NullPointerException ex) {
 
             }
 
@@ -201,16 +201,16 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void initFindButton(){
+    private void initFindButton() {
         TextView findPlugText = (TextView) findViewById(R.id.find_plug_txt);
         ImageView findPlugImg = (ImageView) findViewById(R.id.find_plug_img);
         View find_me_btn = findViewById(R.id.find_me_btn);
-        if (EarPlugService.isSearching){
+        if (EarPlugService.isSearching) {
             findPlugText.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.ic_notifications_off_white_24dp), null, null, null);
             findPlugText.setText(R.string.stop_find_plug);
             findPlugImg.setImageResource(R.drawable.ic_notifications_off_white_48dp);
             find_me_btn.setBackgroundResource(R.drawable.card_alert_bg);
-        } else{
+        } else {
             findPlugText.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.ic_notifications_active_white_24dp), null, null, null);
             findPlugText.setText(R.string.find_plug);
             findPlugImg.setImageResource(R.drawable.ic_notifications_active_white_48dp);

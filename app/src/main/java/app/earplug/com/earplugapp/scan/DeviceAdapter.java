@@ -1,4 +1,3 @@
-
 package app.earplug.com.earplugapp.scan;
 
 import android.support.v7.widget.RecyclerView;
@@ -7,11 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 
 import app.earplug.com.earplugapp.R;
-
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
 
@@ -21,7 +18,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public DeviceAdapter() {
         mLeDevices = new ArrayList<DeviceScanResult>();
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

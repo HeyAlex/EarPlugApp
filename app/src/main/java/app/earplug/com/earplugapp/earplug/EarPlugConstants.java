@@ -1,11 +1,9 @@
 package app.earplug.com.earplugapp.earplug;
 
 import java.util.UUID;
-
 /**
  * Created by mac on 22.04.17.
  */
-
 public class EarPlugConstants {
 
     public final static String ACTION_CONNECTION_STATE_CHANGED =

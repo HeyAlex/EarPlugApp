@@ -1,4 +1,3 @@
-
 package app.earplug.com.earplugapp.notification;
 
 import android.app.Notification;

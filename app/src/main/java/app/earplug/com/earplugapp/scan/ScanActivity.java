@@ -30,7 +30,6 @@ import app.earplug.com.earplugapp.R;
 import app.earplug.com.earplugapp.control.ControlActivity;
 
 
-
 public class ScanActivity extends AppCompatActivity implements DeviceAdapter.ClickListener {
 
     private Toolbar mToolbar;
@@ -215,7 +214,7 @@ public class ScanActivity extends AppCompatActivity implements DeviceAdapter.Cli
     public void onItemClick(int position, View v) {
         BluetoothDevice device = mDeviceAdapter.getItem(position).getDevice();
 
-        if ("EarPlug".equals(device.getName())){
+        if ("EarPlug".equals(device.getName())) {
             Intent intent = new Intent(ScanActivity.this, ControlActivity.class);
             intent.putExtra(ControlActivity.ADDRESS, device.getAddress());
             intent.putExtra(ControlActivity.NAME, device.getName());

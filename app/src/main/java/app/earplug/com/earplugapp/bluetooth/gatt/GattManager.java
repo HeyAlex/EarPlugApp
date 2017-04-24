@@ -1,9 +1,3 @@
-/*
- * Copyright (C) 2017 YotaDevices, LLC - All Rights Reserved.
- *
- * Confidential and Proprietary.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
 package app.earplug.com.earplugapp.bluetooth.gatt;
 
 import android.bluetooth.BluetoothAdapter;
@@ -37,7 +31,6 @@ import static app.earplug.com.earplugapp.earplug.EarPlugConstants.STATE_CONNECTE
 import static app.earplug.com.earplugapp.earplug.EarPlugConstants.STATE_CONNECTING;
 import static app.earplug.com.earplugapp.earplug.EarPlugConstants.STATE_DISCONNECTED;
 
-
 public class GattManager {
 
     private int mConnectionState = STATE_DISCONNECTED;
@@ -64,7 +57,8 @@ public class GattManager {
         initialize();
         connect(mAddres);
     }
-    public void disconnect(){
+
+    public void disconnect() {
         mGatt.disconnect();
     }
 
@@ -148,7 +142,7 @@ public class GattManager {
             @Override
             public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                 super.onCharacteristicChanged(gatt, characteristic);
-                LogCat.d(TAG,"Characteristic " + characteristic.getUuid() + "was changed, device: " + mDevice.getAddress());
+                LogCat.d(TAG, "Characteristic " + characteristic.getUuid() + "was changed, device: " + mDevice.getAddress());
                 if (mCharacteristicChangeListeners.containsKey(characteristic.getUuid())) {
                     for (CharacteristicChangeListener listener : mCharacteristicChangeListeners.get(characteristic.getUuid())) {
                         listener.onCharacteristicChanged(characteristic);
@@ -293,7 +287,7 @@ public class GattManager {
 
     public void addCharacteristicChangeListener(UUID characteristicUuid,
                                                 CharacteristicChangeListener characteristicChangeListener) {
-        if(!mCharacteristicChangeListeners.containsKey(characteristicUuid)) {
+        if (!mCharacteristicChangeListeners.containsKey(characteristicUuid)) {
             mCharacteristicChangeListeners.put(characteristicUuid,
                     new ArrayList<CharacteristicChangeListener>());
         }

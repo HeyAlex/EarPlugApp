@@ -1,9 +1,7 @@
 package app.earplug.com.earplugapp.earplug;
-
 /**
  * Created by mac on 22.04.17.
  */
-
 public class EarPlugOperations {
 
     public static final byte NO_ALERT = 0x00;

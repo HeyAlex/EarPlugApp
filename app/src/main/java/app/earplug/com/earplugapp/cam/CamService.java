@@ -9,17 +9,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
@@ -32,20 +27,9 @@ import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import app.earplug.com.earplugapp.R;
-
-/**
- * Created by mac on 23.04.17.
- */
 
 public class CamService extends HiddenCameraService {
     @Nullable
@@ -98,12 +82,12 @@ public class CamService extends HiddenCameraService {
         Random rand = new Random();
         int selected = rand.nextInt(1000);
         Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,
-                String.valueOf(selected) , String.valueOf(selected)));
+                String.valueOf(selected), String.valueOf(selected)));
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri,"image/*");
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,intent ,0);
+        intent.setDataAndType(uri, "image/*");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification notif = new Notification.Builder(this)
                 .setContentTitle("EarPlug Selfie")
                 .setSmallIcon(R.mipmap.ic_launcher)

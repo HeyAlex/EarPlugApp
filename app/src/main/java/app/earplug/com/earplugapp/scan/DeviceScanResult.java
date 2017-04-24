@@ -1,4 +1,3 @@
-
 package app.earplug.com.earplugapp.scan;
 
 import android.bluetooth.BluetoothDevice;

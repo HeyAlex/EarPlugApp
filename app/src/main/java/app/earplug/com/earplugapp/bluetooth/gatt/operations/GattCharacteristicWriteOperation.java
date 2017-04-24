@@ -23,7 +23,7 @@ public class GattCharacteristicWriteOperation extends GattOperation {
     public void execute(BluetoothGatt gatt) {
 
         BluetoothGattService service = gatt.getService(mService);
-        if(service != null){
+        if (service != null) {
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(mCharacteristic);
             characteristic.setValue(mValue);
             gatt.writeCharacteristic(characteristic);

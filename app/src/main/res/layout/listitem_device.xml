@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Copyright (C) 2017 YotaDevices, LLC - All Rights Reserved.
-
-    Confidential and Proprietary.
-    Unauthorized copying of this file, via any medium is strictly prohibited.
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

@@ -11,7 +11,6 @@ import app.earplug.com.earplugapp.bluetooth.gatt.operations.GattCharacteristicWr
 import app.earplug.com.earplugapp.bluetooth.gatt.operations.GattSetNotificationOperation;
 import app.earplug.com.earplugapp.util.Preconditions;
 
-
 public class EarPlug {
 
     private GattManager mGattMager;

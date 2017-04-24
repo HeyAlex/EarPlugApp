@@ -84,7 +84,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         return mBinder;
     }
 
-
     /**
      * Handles various events fired by the Service.
      */
@@ -144,11 +143,11 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         }
     }
 
-    public void findEarPlug(boolean onStartFinding){
+    public void findEarPlug(boolean onStartFinding) {
         isSearching = onStartFinding;
-        if(onStartFinding){
+        if (onStartFinding) {
             mEarPlug.changeVibrationMode(EarPlugOperations.HIGH_ALERT);
-        }else {
+        } else {
             mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
         }
     }
@@ -195,19 +194,19 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                     }
                 }
             }
-        }else if (spl[0].contains("pressed") && Integer.valueOf(spl[1]) >= 5) {
+        } else if (spl[0].contains("pressed") && Integer.valueOf(spl[1]) >= 5) {
             if (!isRinging) {
-               findPhone();
+                findPhone();
             }
         }
     }
 
-    public void findPhone(){
+    public void findPhone() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("FIND DEVCIE OPTION")
-                        .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 , 1000, 1000, 1000, 1000 , 1000, 1000, 1000, 1000 , 1000, 1000, 1000, 1000 })
+                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000})
                         .setLights(Color.RED, 3000, 3000);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(alarmSound);
@@ -230,6 +229,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         }
         startActivity(surf);
     }
+
     private void rejectCall() {
         try {
             TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
@@ -252,7 +252,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
 
     }
 
-
     public class LocalBinder extends Binder {
         public EarPlugService getService() {
             return EarPlugService.this;
@@ -274,7 +273,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                         }
                     }
                     isRinging = true;
-                }else if (intent.getAction().equals(INCOMING_CALL_END)) {
+                } else if (intent.getAction().equals(INCOMING_CALL_END)) {
                     if (isRinging) {
                         isRinging = false;
                         mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
@@ -291,7 +290,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         return START_STICKY;
     }
 
-
     private void registerServiceReceiver() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(EarPlugConstants.ACTION_CONNECTION_STATE_CHANGED);
@@ -304,7 +302,6 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
         mBluetoothDeviceName = Preconditions.checkNotNull(name, "name == null");
         mEarPlug = new EarPlug(this, this, mBluetoothDeviceAddress, mBluetoothDeviceName);
     }
-
 
     private void fireNotification(Notification notification) {
         NotificationManager notificationManager =

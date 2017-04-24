@@ -14,7 +14,7 @@ import app.earplug.com.earplugapp.R;
  *         23.04.17.
  */
 
-public class ButtonsActivity extends AppCompatActivity{
+public class ButtonsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

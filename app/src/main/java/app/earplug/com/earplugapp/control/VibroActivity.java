@@ -14,7 +14,7 @@ import app.earplug.com.earplugapp.R;
  *         23.04.17.
  */
 
-public class VibroActivity extends AppCompatActivity{
+public class VibroActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

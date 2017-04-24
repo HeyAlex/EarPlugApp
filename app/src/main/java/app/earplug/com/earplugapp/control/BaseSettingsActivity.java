@@ -1,12 +1,9 @@
 package app.earplug.com.earplugapp.control;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toolbar;
 
 /**
  * @author pavelsalomatov
@@ -52,7 +49,7 @@ public class BaseSettingsActivity extends Activity {
 //                finish();
 //                return true;
 //            default:
-                return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
 //        }
     }
 
