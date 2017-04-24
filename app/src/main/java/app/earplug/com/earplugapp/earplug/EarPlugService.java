@@ -9,10 +9,12 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -158,6 +160,8 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     public void onCharacteristicChanged(BluetoothGattCharacteristic characteristic) {
         final String value = characteristic.getStringValue(1);
         final String[] spl = value.split(":");
+        String valueCharacteristic = spl[1].replaceAll("\\D+","");;
+
         if (spl[0].contains("long")) {
             if (!isRinging) {
                 if (PrefUtils.getFromButtonPrefsString(this, "key_long_tap_functionality", "0").equals("0")) {
@@ -178,13 +182,13 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                 }
             }
 
-        } else if (spl[0].contains("pressed") && spl[1].contains("2")) {
+        } else if (spl[0].contains("pressed") && "2".equals(valueCharacteristic)) {
             if (!isRinging) {
                 if (PrefUtils.getFromButtonPrefs(this, "key_make_call", true)) {
                     callLastcall();
                 }
             }
-        } else if (spl[0].contains("pressed") && spl[1].contains("1")) {
+        } else if (spl[0].contains("pressed") && "1".equals(valueCharacteristic)) {
             if (isRinging) {
                 if (PrefUtils.getFromButtonPrefs(this, "key_reject_call", true)) {
                     try {
@@ -194,7 +198,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                     }
                 }
             }
-        } else if (spl[0].contains("pressed") && Integer.valueOf(spl[1]) >= 5) {
+        } else if (spl[0].contains("pressed") && Integer.valueOf(valueCharacteristic) >= 5) {
             if (!isRinging) {
                 findPhone();
             }
@@ -214,7 +218,24 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
     }
 
     public void callLastcall() {
-        String lastCalledNumber = CallLog.Calls.getLastOutgoingCall(this);
+        final ContentResolver resolver = this.getContentResolver();
+        Cursor c = null;
+        String lastCalledNumber;
+        try {
+            c = resolver.query(
+                    CallLog.Calls.CONTENT_URI,
+                    new String[] {CallLog.Calls.NUMBER},
+                    null,
+                    null,
+                    CallLog.Calls.DEFAULT_SORT_ORDER + " LIMIT 1");
+            if (c == null || !c.moveToFirst()) {
+                lastCalledNumber = "";
+            }else{
+                lastCalledNumber = c.getString(0);
+            }
+        } finally {
+            if (c != null) c.close();
+        }
         Uri call = Uri.parse("tel:" + lastCalledNumber);
         Intent surf = new Intent(Intent.ACTION_CALL, call);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -279,7 +300,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                         mEarPlug.changeVibrationMode(EarPlugOperations.NO_ALERT);
                     }
                 } else if (intent.getAction().equals(NOTIFICATION_GENERIC_POSTED)) {
-                    if (isRinging) {
+                    if (!isRinging) {
                         if (PrefUtils.getFromButtonPrefs(this, "key_enable_vibro_notifications", true)) {
                             mEarPlug.changeVibrationMode(EarPlugOperations.MID_ALERT);
                         }
