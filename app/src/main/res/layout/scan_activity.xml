@@ -57,6 +57,30 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/mock_device"
+        android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/abc_list_item_padding_horizontal_material">
+
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="device_name"
+            android:textSize="@dimen/abc_text_size_headline_material" />
+
+        <TextView
+            android:id="@+id/tv_device_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="device_address" />
+
+    </LinearLayout>
     <ImageView
         android:id="@+id/empty_view"
         android:layout_width="match_parent"

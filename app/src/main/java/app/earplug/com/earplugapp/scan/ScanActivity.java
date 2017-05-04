@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yotadevices.util.LogCat;
@@ -67,6 +68,21 @@ public class ScanActivity extends AppCompatActivity implements DeviceAdapter.Cli
             @Override
             public void onClick(View v) {
                 scanLeDevice(true);
+            }
+        });
+
+        View mock = findViewById(R.id.mock_device);
+        TextView mock_name = (TextView) findViewById(R.id.tv_device_name);
+        mock_name.setText("Нажми меня");
+        TextView mock_mac = (TextView) findViewById(R.id.tv_device_address);
+        mock_mac.setText("11:11:11:11:11");
+        mock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScanActivity.this, ControlActivity.class);
+                intent.putExtra(ControlActivity.ADDRESS, "11:11:11:11:11");
+                intent.putExtra(ControlActivity.NAME, "EarPlug");
+                startActivity(intent);
             }
         });
     }
@@ -214,15 +230,15 @@ public class ScanActivity extends AppCompatActivity implements DeviceAdapter.Cli
     public void onItemClick(int position, View v) {
         BluetoothDevice device = mDeviceAdapter.getItem(position).getDevice();
 
-        if ("EarPlug".equals(device.getName())) {
+        //if ("EarPlug".equals(device.getName())) {
             Intent intent = new Intent(ScanActivity.this, ControlActivity.class);
             intent.putExtra(ControlActivity.ADDRESS, device.getAddress());
             intent.putExtra(ControlActivity.NAME, device.getName());
             startActivity(intent);
-        } else {
-            Snackbar.make(mToolbar, "This device not supported", Snackbar
-                    .LENGTH_LONG).show();
-        }
+        //} else {
+        //    Snackbar.make(mToolbar, "This device not supported", Snackbar
+        //            .LENGTH_LONG).show();
+        //}
 
     }
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -58,23 +59,32 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
         View connection_status_img = findViewById(R.id.connection_status_img);
         connection_status_img.setOnClickListener(this);
+
+        onConnectionChanged(EarPlugConstants.STATE_CONNECTING);
+        Handler mockConnect = new Handler();
+        mockConnect.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onConnectionChanged(EarPlugConstants.STATE_CONNECTED);
+            }
+        }, 700);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent bindIntent = new Intent(this, EarPlugService.class);
-        startService(bindIntent);
-        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        registerServiceReceiver();
+        //Intent bindIntent = new Intent(this, EarPlugService.class);
+        //startService(bindIntent);
+        //bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        //registerServiceReceiver();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
+        //unbindService(mServiceConnection);
+        //mBluetoothLeService = null;
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
     }
 
     // Handles various events fired by the CometaService.
@@ -135,7 +145,13 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 disc_con_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mBluetoothLeService.getEarPlug().disconnect();
+                        Handler mockConnect = new Handler();
+                        mockConnect.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onConnectionChanged(EarPlugConstants.STATE_DISCONNECTED);
+                            }
+                        }, 700);
                     }
                 });
                 disc_con_button.setVisibility(View.VISIBLE);
@@ -150,7 +166,13 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                 disc_con_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mBluetoothLeService.getEarPlug().reconnectLastEarPlug(getApplicationContext());
+                        Handler mockConnect = new Handler();
+                        mockConnect.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onConnectionChanged(EarPlugConstants.STATE_CONNECTED);
+                            }
+                        }, 700);
                     }
                 });
                 disc_con_button.setVisibility(View.VISIBLE);
@@ -186,13 +208,14 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.find_me_btn:
                 boolean oldState = EarPlugService.isSearching;
                 boolean newState = !oldState;
-                if (mBluetoothLeService != null && EarPlugService.isConnected) {
-                    mBluetoothLeService.findEarPlug(newState);
-                }
+                EarPlugService.isSearching = newState;
+//                if (mBluetoothLeService != null && EarPlugService.isConnected) {
+//                    mBluetoothLeService.findEarPlug(newState);
+//                }
                 initFindButton();
                 break;
             case R.id.connection_status_img:
-                mBluetoothLeService.setBluetoothDevice(mAddress, mName);
+                //mBluetoothLeService.setBluetoothDevice(mAddress, mName);
                 break;
         }
         if (intent != null) {

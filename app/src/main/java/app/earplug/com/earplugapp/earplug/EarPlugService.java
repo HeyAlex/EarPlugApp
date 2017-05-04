@@ -182,7 +182,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                 }
             }
 
-        } else if (spl[0].contains("pressed") && "2".equals(valueCharacteristic)) {
+        } else if (spl[0].contains("pressed") && ((2 <= Integer.valueOf(valueCharacteristic)) && (Integer.valueOf(valueCharacteristic) < 5))) {
             if (!isRinging) {
                 if (PrefUtils.getFromButtonPrefs(this, "key_make_call", true)) {
                     callLastcall();
@@ -210,7 +210,7 @@ public class EarPlugService extends Service implements GattCharacteristicReadCal
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("FIND DEVCIE OPTION")
-                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000})
+                        .setVibrate(new long[]{1000, 1000, 1000})
                         .setLights(Color.RED, 3000, 3000);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(alarmSound);
